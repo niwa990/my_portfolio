@@ -7,6 +7,10 @@ import (
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/niwa_portfolio/backend/skill"
+	"github.com/niwa_portfolio/backend/skillHandle"
+	"github.com/niwa_portfolio/backend/user"
+	"github.com/niwa_portfolio/backend/userHandle"
 )
 
 func main() {
@@ -22,12 +26,12 @@ func main() {
 		panic(err)
 	}
 
-	skills := NewSkills(db)
+	skills := skill.NewSkills(db)
 	if err := skills.CreateSkillsTable(); err != nil {
 		log.Fatal(err)
 	}
 
-	users := NewUsers(db)
+	users := user.NewUsers(db)
 	if err := users.CreateUsersTable(); err != nil {
 		log.Fatal(err)
 	}
@@ -36,14 +40,14 @@ func main() {
 	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates/"))))
 
 	// ハンドラの登録
-	skillHandle := NewSkillHandlers(skills)
+	skillHandle := skillHandle.NewSkillHandlers(skills)
 	http.HandleFunc("/", skillHandle.ListHandler)
 	http.HandleFunc("/insert", skillHandle.InsertHandler)
 	http.HandleFunc("/update", skillHandle.UpdateHandler)
 	http.HandleFunc("/delete", skillHandle.DeleteHandler)
 	http.HandleFunc("/admin", skillHandle.AdminHandler)
 
-	userHandle := NewUserHandlers(users)
+	userHandle := userHandle.NewUserHandlers(users)
 	http.HandleFunc("/user", userHandle.UserHandler)
 	http.HandleFunc("/singup", userHandle.SignUpHandler)
 	http.HandleFunc("/login", userHandle.LoginHandler)

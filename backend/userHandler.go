@@ -1,15 +1,13 @@
-package main
+package userHandler
 
 import (
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 // HTTPハンドラを集めた型
 type Handlers struct {
-	sk *Skills
 	us *Users
 }
 
@@ -20,9 +18,6 @@ type ViewData struct {
 }
 
 // Handlersを作成
-func NewSkillHandlers(sk *Skills) *Handlers {
-	return &Handlers{sk: sk}
-}
 func NewUserHandlers(us *Users) *Handlers {
 	return &Handlers{us: us}
 }
@@ -132,83 +127,6 @@ func (userHandle *Handlers) UserHandler(w http.ResponseWriter, r *http.Request) 
 		log.Fatal("Cannot Get View ", err)
 		return
 	}
-}
-
-// Skill Create
-func (skillHandle *Handlers) InsertHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		code := http.StatusMethodNotAllowed
-		http.Error(w, http.StatusText(code), code)
-		return
-	}
-
-	skillname := r.FormValue("skillname")
-	period, err := strconv.Atoi(r.FormValue("period"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	skill := &Skill{
-		SkillName: skillname,
-		Period:    period,
-	}
-
-	if err := skillHandle.sk.AddSkill(skill); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	http.Redirect(w, r, "/", http.StatusFound)
-}
-
-// Skill Update
-func (skillHandle *Handlers) UpdateHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		code := http.StatusMethodNotAllowed
-		http.Error(w, http.StatusText(code), code)
-		return
-	}
-
-	id, _ := strconv.Atoi(r.FormValue("id"))
-
-	skillname := r.FormValue("skillname")
-	period, err := strconv.Atoi(r.FormValue("period"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	skill := &Skill{
-		ID:        id,
-		SkillName: skillname,
-		Period:    period,
-	}
-
-	if err := skillHandle.sk.UpdateSkill(skill); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	http.Redirect(w, r, "/admin", http.StatusFound)
-}
-
-// Skill Delete
-func (skillHandle *Handlers) DeleteHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		code := http.StatusMethodNotAllowed
-		http.Error(w, http.StatusText(code), code)
-		return
-	}
-
-	id, _ := strconv.Atoi(r.FormValue("id"))
-
-	if err := skillHandle.sk.DeleteSkill(id); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	http.Redirect(w, r, "/admin", http.StatusFound)
 }
 
 // User Create

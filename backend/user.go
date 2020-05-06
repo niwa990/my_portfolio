@@ -1,12 +1,12 @@
-package main
+package user
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 
-	"github.com/go-playground/validator/v9"
+	// "github.com/go-playground/validator/v9"
 	"github.com/gorilla/sessions"
+	_ "github.com/niwa_portfolio/skill"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -49,37 +49,8 @@ func (us *Users) CreateUsersTable() error {
 	return nil
 }
 
-// User取得
-// func (us *Users) GetUsers(limit int) ([]*User, error) {
-// }
-
 // サインアップ
 func (us *Users) SignUpUser(user *User) error {
-	validate = validator.New()
-	err := validate.Struct(user)
-	if err != nil {
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			fmt.Println(err)
-			return
-		}
-
-		for _, err := range err.(validator.ValidationErrors) {
-			fmt.Println(err.Namespace())
-			fmt.Println(err.Field())
-			fmt.Println(err.StructNamespace())
-			fmt.Println(err.StructField())
-			fmt.Println(err.Tag())
-			fmt.Println(err.ActualTag())
-			fmt.Println(err.Kind())
-			fmt.Println(err.Type())
-			fmt.Println(err.Value())
-			fmt.Println(err.Param())
-			fmt.Println()
-		}
-		// バリデーションエラーの場合の処理
-		return
-	}
-
 	// パスワードのハッシュを生成
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
@@ -99,31 +70,6 @@ func (us *Users) SignUpUser(user *User) error {
 
 // ログイン
 func (us *Users) LoginUser(user *User, w http.ResponseWriter, r *http.Request) error {
-	validate = validator.New()
-	err := validate.Struct(user)
-	if err != nil {
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			fmt.Println(err)
-			return
-		}
-
-		for _, err := range err.(validator.ValidationErrors) {
-			fmt.Println(err.Namespace())
-			fmt.Println(err.Field())
-			fmt.Println(err.StructNamespace())
-			fmt.Println(err.StructField())
-			fmt.Println(err.Tag())
-			fmt.Println(err.ActualTag())
-			fmt.Println(err.Kind())
-			fmt.Println(err.Type())
-			fmt.Println(err.Value())
-			fmt.Println(err.Param())
-			fmt.Println()
-		}
-		// バリデーションエラーの場合の処理
-		return
-	}
-
 	// 入力値と登録値を比較する。
 	inputPassword := user.Password
 	var hashedPassword string
@@ -178,7 +124,6 @@ func (us *Users) LogoutUser(w http.ResponseWriter, r *http.Request) error {
 
 	// セッション情報のクリア
 	session.Options = &sessions.Options{MaxAge: -1, Path: "/"}
-
 	err = session.Save(r, w)
 	if err != nil {
 		return err

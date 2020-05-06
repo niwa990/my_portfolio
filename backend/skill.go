@@ -1,11 +1,8 @@
-package main
+package skill
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
-
-	"github.com/go-playground/validator/v9"
 )
 
 type Skill struct {
@@ -69,31 +66,6 @@ func (ab *Skills) GetSkills(limit int) ([]*Skill, error) {
 
 // データベースに新しいItemを追加する
 func (ab *Skills) AddSkill(skill *Skill) error {
-	validate = validator.New()
-	err := validate.Struct(skill)
-	if err != nil {
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			fmt.Println(err)
-			return
-		}
-
-		for _, err := range err.(validator.ValidationErrors) {
-			fmt.Println(err.Namespace())
-			fmt.Println(err.Field())
-			fmt.Println(err.StructNamespace())
-			fmt.Println(err.StructField())
-			fmt.Println(err.Tag())
-			fmt.Println(err.ActualTag())
-			fmt.Println(err.Kind())
-			fmt.Println(err.Type())
-			fmt.Println(err.Value())
-			fmt.Println(err.Param())
-			fmt.Println()
-		}
-		// バリデーションエラーの場合の処理
-		fmt.Println(err)
-	}
-
 	const sqlStr = `INSERT INTO skills(skillname, period) VALUES (?,?);`
 	_, err := ab.db.Exec(sqlStr, skill.SkillName, skill.Period)
 	if err != nil {
@@ -127,8 +99,6 @@ func (ab *Skills) DeleteSkill(id int) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(id)
 
 	// 削除区分更新
 	const sqlStr = `DELETE FROM skills WHERE id = ?;`
