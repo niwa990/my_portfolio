@@ -1,0 +1,95 @@
+{{define "root"}}
+<!-- Main -->
+<!-- About -->
+<section class="page-section" id="about">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading text-uppercase">About</h2>
+      </div>
+    </div>
+    <div class="row text-left">
+      <div class="col-md-8">
+        <p class="text-muted">
+          スガタとサクラバは小学校からの幼馴染の平成7年生まれ。
+          <br>スガタは就職後、思い立ちで会社を辞め自転車日本一周を経験した後
+          <br>インバウンド事業に興味を持つ。
+          <br>サクラバは高校卒業後、単身でニュージーランド、オーストラリア、カナダと
+          <br>3か国で約3年間の海外留学後帰国し、同じくインバウンド事業に興味を持つ。
+          <br>2人で上京し、<strong>2019年</strong>にchillhouseを始動。
+          <br>今後、活動拠点としての自店舗開発、ゲストハウスの運営や様々な事業を展開していきます。
+        </p>
+        <p class="text-muted">
+          Yusaku and Masa have known each other since we were 6 years old. We are now 23 years old.
+          <br>Yusaku... I had worked in Japan for a few years then quit my job for traveling.
+          <br>I traveled all over Japan by bicycle.
+          <br>Masa...I lived in overseas(New Zealand, Australia, Canada) for 3 years after I graduated high school.
+          <br>We have same passion.Our passion is to start up our own business
+          <br>in inbound field and entertain peoplefrom other countries as well as support
+          <br>them for their better life in Japan.
+          <br>We have moved in Tokyo together from our hometown and started up “chillhouse”.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <h3>最新{{len .Skill}}件</h3>
+        {{if .Skill}}
+          <table class="table table-striped">
+            <tr>
+              <th>スキル</th>
+              <th>月数</th>
+            </tr>
+            {{range .Skill}}
+              <tr>
+                <td>{{.SkillName}}</td>
+                <td>{{.Period}}ヶ月</td>
+              </tr>
+            {{end}}
+          </table>
+        {{else}}
+          <p>データがありません</p>
+        {{end}}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Garally -->
+<section class="page-section bg-light" id="garally">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading text-uppercase">Garally</h2>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/hotdog1.jpg" alt="">
+      </div>
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/hotdog2.jpg" alt="">
+      </div>
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/hotdog3.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/event1.jpg" alt="">
+      </div>
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/event2.jpg" alt="">
+      </div>
+      <div class="col-md-4">
+        <img style="width: 100%; height: auto;" src="templates/img/garally/event3.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{{end}}
