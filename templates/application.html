@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>NIWA PORTFOLIO</title>
+<!--   <link rel="shortcut icon" href="templates/img/logos/brand.png">
+  <link href="../templates/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../templates/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../templates/css/agency.min.css" rel="stylesheet" type="text/css"> -->
+
+  <link href="http://localhost:8090/templates/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="http://localhost:8090/templates/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="http://localhost:8090/templates/css/agency.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body id="page-top">
+  <!-- Header -->
+  {{template "header" .}}
+
+  <!-- Main -->
+{{if eq .TempNum 1}}
+    <!-- root.html -->
+    {{template "root" .}}
+
+{{else if eq .TempNum 2}}
+    <!-- admin.html -->
+    {{template "admin" .}}
+
+{{else if eq .TempNum 3}}
+    <!-- user.html -->
+    {{template "user" .}}
+
+{{else}}
+    <!-- login.html -->
+    {{template "login" .}}
+{{end}}
+
+
+  <!-- Footer -->
+{{template "footer"}}
+
+
+<!--   <script src="templates/vendor/jquery/jquery.min.js"></script>
+  <script src="templates/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="templates/vendor/jquery-easing/jquery.easing.min.js"></script> -->
+  <script src="http://localhost:8090/templates/vendor/jquery/jquery.min.js"></script>
+  <script src="http://localhost:8090/templates/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="http://localhost:8090/templates/vendor/jquery-easing/jquery.easing.min.js"></script>
+</body>
+
+
+
+</html>

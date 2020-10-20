@@ -3,6 +3,14 @@
 <!-- SignIn Form-->
 <section class="page-section bg-light" id="signIn">
   <div class="container">
+
+    <!-- err messages -->
+    {{if .Messages}}
+      {{range $i, $v :=  .Messages}}
+        <div class="alert alert-danger" role="alert">{{$v}}</div>
+      {{end}}
+    {{end}}
+
     <h4>サインイン</h4>
     <form method="post" action="/singup">
       <div class="form-group">
@@ -26,6 +34,5 @@
     </form>
   </div>
 </section>
-
 
 {{end}}

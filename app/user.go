@@ -1,14 +1,19 @@
-package user
+package app
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	// "github.com/go-playground/validator/v9"
+
 	"github.com/gorilla/sessions"
-	_ "github.com/niwa_portfolio/skill"
 	"golang.org/x/crypto/bcrypt"
 )
+
+type Users struct {
+	db *sql.DB
+}
 
 type User struct {
 	ID       int
@@ -19,17 +24,10 @@ type User struct {
 	Password string `validate:"required,gte=5"`
 }
 
-type Users struct {
-	db *sql.DB
-}
-
 // 新しいUsersを作成する
 func NewUsers(db *sql.DB) *Users {
 	return &Users{db: db}
 }
-
-// セッション
-var store = sessions.NewCookieStore([]byte("secret-password"))
 
 // テーブルがなかったら作成する
 func (us *Users) CreateUsersTable() error {
@@ -48,6 +46,35 @@ func (us *Users) CreateUsersTable() error {
 
 	return nil
 }
+
+// セッション
+var store = sessions.NewCookieStore([]byte("secret-password"))
+
+// func (ab *Users) GetUsers() ([]*User, error) {
+// 	// LIMITで件数を最大の取得する件数を絞る
+// 	const sqlStr = `SELECT * FROM skills ORDER BY id DESC LIMIT ?`
+// 	rows, err := ab.db.Query(sqlStr, )
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer rows.Close() // 関数終了時にCloseが呼び出される
+
+// 	var users []*User
+// 	for rows.Next() {
+// 		var user User
+// 		err := rows.Scan(&user.ID, &user.Name1, &user.Name2, &user.Mail)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		users = append(users, &user)
+// 	}
+
+// 	if err = rows.Err(); err != nil {
+// 		return nil, err
+// 	}
+
+// 	return skills, nil
+// }
 
 // サインアップ
 func (us *Users) SignUpUser(user *User) error {
@@ -78,29 +105,17 @@ func (us *Users) LoginUser(user *User, w http.ResponseWriter, r *http.Request) e
 	if err != nil {
 		return err
 	}
-
 	// 比較
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(inputPassword))
 	if err != nil {
+		// パスワードが違いますメッセージ表示
 		return err
 	}
-
 	// セッション登録
-	err = SessionCreate(w, r)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// session作成
-func SessionCreate(w http.ResponseWriter, r *http.Request) error {
 	session, err := store.Get(r, "session")
 	if err != nil {
 		return err
 	}
-
 	mail := r.FormValue("mail")
 	if mail != "" {
 		session.Values["mail"] = mail
@@ -110,7 +125,6 @@ func SessionCreate(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -124,6 +138,16 @@ func (us *Users) LogoutUser(w http.ResponseWriter, r *http.Request) error {
 
 	// セッション情報のクリア
 	session.Options = &sessions.Options{MaxAge: -1, Path: "/"}
+
+	// フラッシュ
+	if flashes := session.Flashes(); len(flashes) > 0 {
+		// Use the flash values.
+	} else {
+		// Set a new flash.
+		session.AddFlash("ログアウトしました。")
+		fmt.Println(session.Values["_flash"])
+	}
+
 	err = session.Save(r, w)
 	if err != nil {
 		return err

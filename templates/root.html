@@ -3,18 +3,20 @@
 <!-- About -->
 <section class="page-section" id="about">
   <div class="container">
+
     <div class="row">
       <div class="col-lg-12 text-center">
         <h2 class="section-heading text-uppercase">About</h2>
       </div>
     </div>
+
     <div class="row text-left">
       <div class="col-md-8">
         <p class="text-muted">
-          スガタとサクラバは小学校からの幼馴染の平成7年生まれ。
-          <br>スガタは就職後、思い立ちで会社を辞め自転車日本一周を経験した後
-          <br>インバウンド事業に興味を持つ。
-          <br>サクラバは高校卒業後、単身でニュージーランド、オーストラリア、カナダと
+          頭のサイズ大きすぎたために難産でありながらも、公務員一家の次男として生を受けた。
+          <br>小中と野球、高専はバスケとスポーツ小僧でした。
+          <br>高専では建築学科に所属し、単位を一つも落とさず無難に卒業する。
+          <br>またはじめての一人暮らしを超縦社会の寮で５年間過ごす。
           <br>3か国で約3年間の海外留学後帰国し、同じくインバウンド事業に興味を持つ。
           <br>2人で上京し、<strong>2019年</strong>にchillhouseを始動。
           <br>今後、活動拠点としての自店舗開発、ゲストハウスの運営や様々な事業を展開していきます。
@@ -30,25 +32,47 @@
           <br>We have moved in Tokyo together from our hometown and started up “chillhouse”.
         </p>
       </div>
+
       <div class="col-md-4">
         <h3>最新{{len .Skill}}件</h3>
         {{if .Skill}}
-          <table class="table table-striped">
-            <tr>
-              <th>スキル</th>
-              <th>月数</th>
-            </tr>
-            {{range .Skill}}
+          {{if .IsLogin}}
+            <table class="table table-striped">
+              <tr>
+                <th>スキル</th>
+                <th>月数</th>
+                <th>操作</th>
+              </tr>
+              {{range .Skill}}
+              <tr>
+                <td>{{.SkillName}}</td>
+                <td>{{.Period}}ヶ月</td>
+                <td>
+                  <a href="/skill/{{.ID}}/edit">編集</a> /
+                  <a href="/skill/{{.ID}}/delete">削除</a>
+                </td>
+              </tr>
+              {{end}}
+            </table>
+          {{else}}
+            <table class="table table-striped">
+              <tr>
+                <th>スキル</th>
+                <th>月数</th>
+              </tr>
+              {{range .Skill}}
               <tr>
                 <td>{{.SkillName}}</td>
                 <td>{{.Period}}ヶ月</td>
               </tr>
-            {{end}}
-          </table>
+              {{end}}
+            </table>
+          {{end}}
         {{else}}
           <p>データがありません</p>
         {{end}}
       </div>
+
     </div>
   </div>
 </section>
